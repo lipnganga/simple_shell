@@ -1,158 +1,36 @@
 #include "shell.h"
 
 /**
- * exitt - causes normal process termination
- * it is a low level programming.
- * exitt - causes normal process termination
- *  and value of status returned to parent
- * @arv: array of words of the entered line
+ * exit_shell - Exit shell after running
+ * @line: Line buffer of user input
+ * @args: Arguments from user
+ * @env: Environment to be run on
+ * Return: Void
  */
-void exitt(char **arv)
+void exit_shell(char **args, char *line, char **env)
 {
-	int i, n;
-
-	if (arv[1])
-	{
-		n = atoi(arv[1]);
-		if (n <= -1)
-			n = 2;
-		free(arv);
-		exit(n);
-	}
-	for (i = 0; arv[i]; i++)
-		free(arv[i]);
-	free(arv);
+	free(args);
+	free(line);
+	(void)env;
 	exit(0);
 }
-
 /**
- * _atoi - converts a string into an integer
- *@s: pointer to a string
- *Return: the integer
+ * env_shell - Prints shell environment to be executed
+ * @args: Arguments split from cmdline prompt
+ * @line: User input buffer
+ * @env: Environment to be displayed
  */
-int _atoi(char *s)
+void env_shell(char **args, char *line, char **env)
 {
-	int i, integer, sign = 1;
+	int size, i = 0;
 
-	i = 0;
-	integer = 0;
-	while (!((s[i] >= '0') && (s[i] <= '9')) && (s[i] != '\0'))
+	while (env[i] != NULL)
 	{
-		if (s[i] == '-')
-		{
-			sign = sign * (-1);
-		}
+		size = _strlen(env[i]);
+		write(1, env[i], size);
+		write(1, "\n", 1);
 		i++;
 	}
-	while ((s[i] >= '0') && (s[i] <= '9'))
-	{
-		integer = (integer * 10) + (sign * (s[i] - '0'));
-		i++;
-	}
-	return (integer);
-}
-
-/**
- * env - prints the current environment
- * @arv: array of arguments
- */
-void env(char **arv __attribute__ ((unused)))
-{
-
-	int i;
-
-	for (i = 0; environ[i]; i++)
-	{
-		_puts(environ[i]);
-		_puts("\n");
-	}
-
-}
-
-/**
- * _getenv - Initialize a new environment variable, or modify an existing one
- * @arv: array of entered words
- */
-void _getenv(char **arv)
-{
-	int i, j, k;
-	char **environ;
-
-	if (!arv[1] || !arv[2])
-	{
-		perror(_getenv("_"));
-		return;
-	}
-
-	for (i = 0; environ[i]; i++)
-	{
-		j = 0;
-		if (arv[1][j] == environ[i][j])
-		{
-			while (arv[1][j])
-			{
-				if (arv[1][j] != environ[i][j])
-					break;
-
-				j++;
-			}
-			if (arv[1][j] == '\0')
-			{
-				k = 0;
-				while (arv[2][k])
-				{
-					environ[i][j + 1 + k] = arv[2][k];
-					k++;
-				}
-				environ[i][j + 1 + k] = '\0';
-				return;
-			}
-		}
-	}
-	if (!environ[i])
-	{
-
-		environ[i] = concat_all(arv[1], "=", arv[2]);
-		environ[i + 1] = '\0';
-	}
-}
-
-/**
- * _unsetenv - Removes an environment variable
- * @arv: array of entered words
- */
-void _unsetenv(char **arv)
-{
-	int i, j;
-
-	if (!arv[1])
-	{
-		perror(_getenv("_"));
-		return;
-	}
-	for (i = 0; environ[i]; i++)
-	{
-		j = 0;
-		if (arv[1][j] == environ[i][j])
-		{
-			while (arv[1][j])
-			{
-				if (arv[1][j] != environ[i][j])
-					break;
-
-				j++;
-			}
-			if (arv[1][j] == '\0')
-			{
-				free(environ[i]);
-				environ[i] = environ[i + 1];
-				while (environ[i])
-				{
-					environ[i] = environ[i + 1];
-					i++;
-				}
-				return;
-			}
-		}
-	}
+	(void)args;
+	(void)line;
 }
