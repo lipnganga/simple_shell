@@ -4,7 +4,7 @@
  * exit_shell - Exit shell after running
  * @line: Line buffer of user input
  * @args: Arguments from user
- * @env: Environment to be run on
+ * @env: Environment to be run on the shell
  * Return: Void
  */
 void exit_shell(char **args, char *line, char **env)
@@ -15,7 +15,7 @@ void exit_shell(char **args, char *line, char **env)
 	exit(0);
 }
 /**
- * env_shell - Prints shell environment to be executed
+ * env_shell - Functio that  Prints shell environment to be executed
  * @args: Arguments split from cmdline prompt
  * @line: User input buffer
  * @env: Environment to be displayed
