@@ -78,5 +78,4 @@ void _puts2(char *str);
 char *_uitoa(unsigned int count);
 
 #endif /* _SHELL_H_ */
-Footer
 
